@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <meta name="description" content="Minimal Java Application with Gradle">
 <meta name="keywords" content="java jvm gradle project template">
 <meta name="author" content="Mikko Värri">
@@ -47,7 +47,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this post we will take a look at starting a Java project from scratch,
+<p>In this post we will take a detailed look at starting a Java project from scratch,
 using the <a href="https://gradle.org/">Gradle</a> as the build tool.</p>
 </div>
 <div class="paragraph">
@@ -67,7 +67,11 @@ Even though in a real application I wouldn&#8217;t try to be so minimalistic.</p
 <li><a href="#_nail_down_the_gradle_version">Nail Down the Gradle Version</a></li>
 </ul>
 </li>
-<li><a href="#_implement_the_java_application">Implement the Java Application</a></li>
+<li><a href="#_implement_the_java_application">Implement the Java Application</a>
+<ul class="sectlevel2">
+<li><a href="#_declare_the_application_version">Declare the Application Version</a></li>
+</ul>
+</li>
 <li><a href="#_conclusion">Conclusion</a></li>
 </ul>
 </div>
@@ -76,28 +80,59 @@ Even though in a real application I wouldn&#8217;t try to be so minimalistic.</p
 <h2 id="_a_project_starts_with_an_empty_directory">A Project Starts with an Empty Directory</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We just got inspired with an idea to build a command line interface (CLI)
-application that prints a greeting on the console.  We will call it Hello CLI.</p>
+<p>Let&#8217;s imagine we just got inspired with an idea to build a command line interface (CLI)
+application that prints a greeting on the screen.  We will call it <em>Hello CLI</em>.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://git-scm.com/">Git</a> has been the <em>de facto</em> version control system
-for software projects since forever.
-So let&#8217;s start with a minimal Git project:</p>
+<p>All we need to start with is an empty <code>hello-cli</code> directory.</p>
 </div>
 <div class="listingblock">
-<div class="title">Shell commands to run to create a Git repository</div>
+<div class="title">Shell commands to start the project</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir </span>hello-cli
-<span class="nb">cd </span>hello-cli
-git init <span class="nb">.</span>
-git commit <span class="nt">--allow-empty</span> <span class="nt">-m</span> <span class="s2">"Initial (empty) commit"</span> <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir </span>hello-cli <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="nb">cd </span>hello-cli <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The first commit in any Git repository is special in that
+<td>The <code>mkdir</code> command creates a new directory called <code>hello-cli</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>cd</code> changes the notion of "current directory",
+so that all the following commands happen in our newly created <code>hello-cli</code> directory</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><a href="https://git-scm.com/">Git</a> has been the <em>de facto</em> version control system
+for software projects since forever.  If you are not interested in tracking
+the changes, or you are going to use something else like <a href="https://pijul.org">Pijul</a>,
+you can safely skip all the Git commands.</p>
+</div>
+<div class="paragraph">
+<p>For Hello CLI, we expect it to have a long life, so we start by initializing
+a minimal Git repository in the <code>hello-cli</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="title">Initializing a Git project</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">git init <span class="nb">.</span> <i class="conum" data-value="1"></i><b>(1)</b>
+git commit <span class="nt">--allow-empty</span> <span class="nt">-m</span> <span class="s2">"Initial (empty) commit"</span> <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>init</code> command (note the <code>.</code> at the end) creates a <code>.git</code> directory, which is managed by Git</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>commit</code> records our current version of the software.
+The first commit in any Git repository is special in that
 it&#8217;s the only commit that doesn&#8217;t have parents.
 With the <code>--allow-empty</code> flag we can make it even more special:
 no content either.</td>
@@ -112,15 +147,27 @@ no content either.</td>
 <div class="paragraph">
 <p>For a project to be a Gradle project,
 it needs to have either a <code>settings.gradle</code> or a <code>build.gradle</code> file.
-I like to start with the former, since it declares the name of the project.</p>
+Whichever you choose, an empty file would technically be enough.
+So, a truly minimal Gradle project is just one empty file in an otherwise empty
+directory.  But we are not going to be that minimal.</p>
+</div>
+<div class="paragraph">
+<p>I like to start with the <code>settings.gradle</code> file,
+that at least declares the name of the project.</p>
 </div>
 <div class="listingblock">
-<div class="title">Shell commands to use to initialize a Gradle project</div>
+<div class="title">Initializing a Gradle project</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">echo</span> <span class="s2">"rootProject.name = 'hello-cli'"</span> <span class="o">&gt;</span>settings.gradle
-git add settings.gradle
-git commit <span class="nt">-m</span> <span class="s2">"Minimal Gradle project"</span></code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">echo</span> <span class="s2">"rootProject.name = 'hello-cli'"</span> <span class="o">&gt;</span>settings.gradle <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Here we create a file <code>settings.gradle</code> and write the line <code>rootProject.name = 'hello-cli'</code> in it.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Without the project name in <code>settings.gradle</code>, Gradle would default to using
@@ -128,33 +175,95 @@ the directory name as the value of the <code>project.name</code> property.
 In our case they are the same.
 But if someone cloned this project to a differently named directory,
 the <code>project.name</code> property would have that different name,
-and something could go wrong.</p>
+and in a more substantial build something could go wrong.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>What&#8217;s with the <code>rootProject.name</code> versus <code>project.name</code>?  This project
+is using a "single project build", in Gradle vocabulary.  By setting the
+<code>rootProject.name</code> in the <code>settings.gradle</code> file, we make it explicit that we
+are talking about the root project, even if we later refactor this Gradle project
+into a <a href="https://docs.gradle.org/current/userguide/intro_multi_project_builds.html">multi-project build</a>.</p>
+</div>
+</div>
 </div>
 <div class="paragraph">
-<p>Also, if some ancestor directory contained a <code>settings.gradle</code> file,
-then a <code>build.gradle</code> file alone could be mistaken to be a Gradle submodule.
+<p>Another detail in favor of <code>settings.gradle</code> instead of <code>build.gradle</code> as the first file is that
+if some ancestor directory contained a <code>settings.gradle</code> file,
+then a lonely <code>build.gradle</code> file could be mistaken to be a Gradle subproject
+in a multi-project build.
 Quite unlikely, but still&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Anyway, with this part done, we can commit the progress to Git.</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding the <code>settings.gradle</code> file to Git</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">git add settings.gradle
+git commit <span class="nt">-m</span> <span class="s2">"Minimal Gradle project"</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And while we are at it (basically integrating Git and Gradle), we might want to
+deal with the Gradle temporary files upfront:
+when building stuff with Gradle, it stores the caches and build outputs in
+directories <code>.gradle</code> and <code>build</code> under the project directory.
+Since we are tracking changes, we don&#8217;t want those in source control.
+Naturally, this is optional, and unnecessary if not using Git.</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding temporary Gradle managed directories to <code>.gitignore</code> file</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">echo</span> <span class="s2">".gradle"</span> <span class="o">&gt;</span>.gitignore
+<span class="nb">echo</span> <span class="s2">"build"</span> <span class="o">&gt;&gt;</span>.gitignore
+git add .gitignore
+git commit <span class="nt">-m</span> <span class="s2">"Ignore Gradle caches and build outputs"</span></code></pre>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_nail_down_the_gradle_version">Nail Down the Gradle Version</h3>
 <div class="paragraph">
 <p>For more reliable builds,
-and for ease of upgrades across team members,
+and for ease of Gradle upgrades across team members,
 we want to include the <a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html">Gradle Wrapper</a>
-in the source control.</p>
+in the source control.
+Again, this section is completely optional if you try to be truly minimalistic.</p>
 </div>
+<div id="_gradle_and_java_requirement" class="sidebarblock">
+<div class="content">
+<div class="title">Gradle and Java Requirements</div>
 <div class="paragraph">
-<p>Following snippet assumes we have the desired version of Gradle installed globally.
-On Mac OS X, Linux, and similar systems, we can use the <code>sdk install gradle</code> command from the <a href="https://sdkman.io/">SDKMAN!</a>
-On Windows, <code>choco install gradle</code> from <a href="https://community.chocolatey.org/">Chocolatey</a> would do.
-The globally installed Gradle tends to do little more than provide the wrapper
-for me, so I keep the global install up-to-date with the latest release.</p>
-</div>
-<div class="paragraph">
-<p>Since Gradle is a Java application, we also need to have a
+<p>Following assumes we have the desired version of Gradle installed globally.
+Since Gradle is a Java application, we also need to have a
 <a href="https://docs.gradle.org/current/userguide/compatibility.html">compatible Java version</a>
-installed globally.  The <code>sdk install java</code> is your friend.  On Windows,
-I&#8217;ve had success with <a href="https://github.com/ystyle/jvms">JVMS</a>.</p>
+installed.
+At the time of writing, latest Gradle version is 8.1.1 and it can run on any Java between 8 and 19.</p>
+</div>
+<div class="paragraph">
+<p>On Mac OS X, Linux, WSL, FreeBSDs, and Cygwin,
+we can use the <a href="https://sdkman.io/">SDKMAN!</a> for managing both Java and Gradle installations.
+On Windows, <a href="https://community.chocolatey.org/">Chocolatey</a> would do for Gradle at least.
+For managing Java JDKs on Windows, I&#8217;ve had success with <a href="https://github.com/ystyle/jvms">JVMS</a>.</p>
+</div>
+<div class="paragraph">
+<p>The reason for using package or SDK managers instead of downloading stuff directly from
+<a href="https://gradle.org/releases/">Gradle</a> or
+<a href="https://adoptium.net/">Adoptium</a> pages
+is the ease of upgrading.  An occasional <code>sdk upgrade</code> or <code>choco upgrade</code> command
+is way more convenient than visiting various websites.</p>
+</div>
+<div class="paragraph">
+<p>Also, a good SDK manager can manage side-by-side installs of different versions of the same SDK.
+If you need to run something on Java 8, just <code>sdk use java 8&lt;TAB&gt;</code> will get you started.</p>
+</div>
+<div class="paragraph">
+<p>The globally installed Gradle tends to do little more than provide the wrapper
+for me, so I keep the global install up-to-date with the latest release.
+As for Java, really, any version of Java works for us as long as your chosen version of Gradle can run on it.</p>
+</div>
+</div>
 </div>
 <div class="paragraph">
 <p>With Java and Gradle installed globally, we can add the Gradle Wrapper to
@@ -162,28 +271,27 @@ our project:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">echo</span> <span class="s2">".gradle"</span> <span class="o">&gt;</span>.gitignore
-<span class="nb">echo</span> <span class="s2">"build"</span> <span class="o">&gt;&gt;</span>.gitignore <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="nb">echo</span> <span class="s2">"gradlew.bat -text"</span> <span class="o">&gt;</span>.gitattributes <i class="conum" data-value="2"></i><b>(2)</b>
-gradle wrapper
-git add .gitignore .gitattributes gradle<span class="k">*</span>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">echo</span> <span class="s2">"gradlew.bat -text"</span> <span class="o">&gt;</span>.gitattributes
+gradle wrapper</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>gradle wrapper</code> command generates a directory caller <code>gradle</code> and two scripts:
+<code>gradlew</code> and <code>gradlew.bat</code>.
+The <code>gradlew.bat</code> file contains Windows style line endings, so I tend to lie to
+Git that it is not a text file.
+This disables the automatic line ending conversions.
+There are probably better ways to handle this.
+All I want is that Git handles these files as they were shipped by Gradle.</p>
+</div>
+<div class="paragraph">
+<p>Finally, commit the changes to Git.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">git add .gitattributes gradle<span class="k">*</span>
 git commit <span class="nt">-m</span> <span class="s2">"Add Gradle wrapper"</span></code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>.gradle</code> is the Gradle cache directory, and the <code>build</code> will contain
-all the generated files.  We don&#8217;t want Git tracking them.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The <code>gradlew.bat</code> file contains Windows style line endings, so I tend to
-lie to Git that it is not a text file.  This disables the automatic
-line ending conversions.  There&#8217;s probably better ways to handle this.</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
@@ -193,6 +301,53 @@ line ending conversions.  There&#8217;s probably better ways to handle this.</td
 <div class="sectionbody">
 <div class="paragraph">
 <p>Now we are ready to implement the Hello CLI.</p>
+</div>
+<div class="paragraph">
+<p>Our application consists of three files:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A Java class called <code>Main</code> that contains the so-called production code: code that our users run</p>
+</li>
+<li>
+<p>A <code>build.gradle</code> file that defines how to build and package the application, and how to run the application during
+development</p>
+</li>
+<li>
+<p>A <code>gradle.properties</code> file, which is optional, defining some common Gradle settings</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start with the production code.
+The conventional place for the production code is the <code>src/main/java</code> directory.
+Under that directory, we have directories for our Java packages.</p>
+</div>
+<div class="listingblock">
+<div class="title">Creating the directory for the <code>Main.java</code> file</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir</span> <span class="nt">-p</span> src/main/java/org/example/hello/cli</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Our CLI application fits fine into the <code>main</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="title">Contents of the <code>src/main/java/org/example/hello/cli/Main.java</code> file</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kn">package</span> <span class="nn">org.example.hello.cli</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">...</span> <span class="n">args</span><span class="o">){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, World! Running on Java "</span>
+                               <span class="o">+</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"java.version"</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now to the build file, <code>build.gradle</code>.</p>
 </div>
 <div class="listingblock">
 <div class="title">Contents of the <code>build.gradle</code> file</div>
@@ -208,7 +363,7 @@ line ending conversions.  There&#8217;s probably better ways to handle this.</td
 <span class="o">}</span>
 
 <span class="n">application</span> <span class="o">{</span>
-    <span class="n">mainClass</span> <span class="o">=</span> <span class="s1">'fi.linuxbox.app.Main'</span>
+    <span class="n">mainClass</span> <span class="o">=</span> <span class="s1">'org.example.hello.cli.Main'</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
@@ -216,56 +371,80 @@ line ending conversions.  There&#8217;s probably better ways to handle this.</td
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>application</code> Gradle plugin gives us the ability to run our JVM application.</td>
+<td>The <code>application</code> Gradle plugin gives us the ability to run our JVM application during development.
+It also automatically applies the <code>java</code> plugin so that Gradle knows how to build and package the
+code.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>The Java version we declare here does not have to be the same as we have
-globally.  This is the version that will be used to compile and run our
-Hello CLI.</td>
+globally.  This is the version of Java that will be used to compile and run our
+Hello CLI.  The version used to run Gradle can be different.</td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>The conventional place for the production code is the <code>src/main/java</code> directory.</p>
-</div>
-<div class="listingblock">
-<div class="title">Creating the directory for the <code>Main.java</code> file</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir</span> <span class="nt">-p</span> src/main/java/fi/linuxbox/app</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Our CLI application fits fine into the <code>main</code> method:</p>
-</div>
-<div class="listingblock">
-<div class="title">Contents of the <code>src/main/java/fi/linuxbox/app/Main.java</code> file</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="kn">package</span> <span class="nn">fi.linuxbox.app</span><span class="o">;</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">...</span> <span class="n">args</span><span class="o">){</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, World! Running on Java "</span>
-                               <span class="o">+</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"java.version"</span><span class="o">));</span>
-    <span class="o">}</span>
-<span class="o">}</span></code></pre>
-</div>
 </div>
 <div class="paragraph">
 <p>We can do some exploratory testing by running the application:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell">./gradlew run</code></pre>
+<pre class="rouge highlight"><code data-lang="shell">./gradlew run <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you skipped the Gradle Wrapper installation, you would use your
+<a href="#_gradle_and_java_requirement">globally installed</a> <code>gradle</code> command here.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>And since it&#8217;s working, let&#8217;s commit and call it a day.</p>
+<p>Gradle will automatically recompile any changes before running the application.</p>
+</div>
+<div class="paragraph">
+<p>If it seems to be working, let&#8217;s commit and call it a day.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell">git add src build.gradle
 git commit <span class="nt">-m</span> <span class="s2">"Minimal Java application"</span></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_declare_the_application_version">Declare the Application Version</h3>
+<div class="paragraph">
+<p>As mentioned in the previous section, we can add Gradle configuration in a <code>gradle.properties</code> file.
+This is optional.</p>
+</div>
+<div class="paragraph">
+<p>The configuration that I tend to add to new projects is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title">Contents of the optional <code>gradle.properties</code> file</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="py">group</span> <span class="p">=</span> <span class="s">org.example</span>
+<span class="py">version</span> <span class="p">=</span> <span class="s">0.1.0</span>
+
+<span class="c">#org.gradle.caching=true
+#org.gradle.configuration-cache=true
+#org.gradle.configureondemand=true
+#org.gradle.parallel=true
+</span><span class="py">org.gradle.welcome</span><span class="p">=</span><span class="s">never</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The reason I tend to declare the <code>group</code> and <code>version</code> in <code>gradle.properties</code> instead of in <code>build.gradle</code>
+is that, when I refactor the project into multi-project build, I don&#8217;t need to repeat them in subprojects.</p>
+</div>
+<div class="paragraph">
+<p>The settings that I left in comments are related to build optimizations
+and are not enabled by default by Gradle.
+The comments are there to remind me that when the project begins to be more substantial,
+I can review those optimizations and see if they work with our build.
+The relevant documents can be found from the
+<a href="https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_configuration_properties">Gradle Build Environment</a> page.</p>
 </div>
 </div>
 </div>
@@ -279,16 +458,9 @@ it is a Git project, a Gradle project, and a Java project.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="diag-93fa7eec70533c45ec97315d0454d69d.png" alt="Diagram" width="165" height="239">
+<img src="diag-0fe1848faf6c4ac15da0de5ecade33e3.png" alt="Diagram" width="218" height="263">
 </div>
 <div class="title">Figure 1. Directory structure of our project</div>
-</div>
-<div class="paragraph">
-<p>You can learn more about the Git commands
-<a href="https://git-scm.com/docs/git-init">init</a>,
-<a href="https://git-scm.com/docs/git-add">add</a>, and
-<a href="https://git-scm.com/docs/git-commit">commit</a> at the <a href="https://git-scm.com/" class="bare">https://git-scm.com/</a>
-site.</p>
 </div>
 </div>
 </div>
