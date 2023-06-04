@@ -1,0 +1,131 @@
+/* Overwrite the body background from asciidoctor.css.
+   When the UI "overscrolls" the page, browser fills that
+   area with the body bg color.
+ */
+body {
+    background-color: #282828;
+}
+/* We wrap the asciidoc generated content in a div with this ID,
+   and restore the background color to what asciidoctor.css had
+   for body.
+ */
+#asciidoc-content {
+    background-color: white;
+    padding-top: 2em; /* padding before preamble or first section */
+    padding-bottom: 2em; /* padding before custom footer */
+}
+
+#custom-header {
+    display: flex;
+    background-color: #282828;
+}
+
+/* fixed header */
+
+#custom-header-fixed {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    height: 75px;
+    background-color: #282828;
+    z-index: 1; /* above the content, below the custom-header-notFixed */
+    padding: 1em;
+}
+
+#custom-header-fixed img {
+    width: 100px;
+    height: 100px;
+    overflow: visible;
+}
+
+.custom-links {
+    display: flex;
+    flex-wrap: wrap;
+}
+.custom-links > * {
+    margin-right: 1em;
+}
+.custom-links a {
+    height: min-content;
+    font-family: "Fira Sans Extra Condensed","DejaVu Sans",sans-serif;
+    font-weight: bold;
+    font-variant-caps: all-small-caps;
+    text-decoration: none;
+    color: rgb(251, 241, 199);
+}
+.custom-links a:hover {
+    text-decoration: underline;
+}
+
+/* not fixed header */
+
+#custom-header-notFixed {
+    width: 100%;
+    z-index: 2; /* above custom-header-fixed */
+
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+
+    /* on narrow screens the titles may be on the picture. */
+    text-shadow: 1px 0 5px rgba(33, 27, 0, 0.9), -1px 0 5px rgba(33, 27, 0, 0.9), 0 1px 5px rgba(33, 27, 0, 0.9), 0 -1px 5px rgba(33, 27, 0, 0.9);
+}
+
+#custom-doctitle {
+    color: rgb(251, 241, 199);
+}
+
+#custom-details {
+    line-height: 1.25;
+    color: rgba(251, 241, 199, .6);
+}
+
+#preamble {
+    font-size: larger;
+}
+
+#custom-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    color: rgba(251, 241, 199, .5);
+}
+
+/* Override the font families */
+
+body {
+    font-family: "EB Garamond","DejaVu Serif",serif;
+}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{
+    font-family: "EB Garamond","DejaVu Serif",serif;
+}
+
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6 {
+    font-family: "Fira Sans Extra Condensed","DejaVu Sans",sans-serif;
+}
+#toc ul{
+    font-family: "Fira Sans Extra Condensed","DejaVu Sans",sans-serif;
+}
+.admonitionblock>table td.icon .title{
+    font-family: "Fira Sans Extra Condensed","DejaVu Sans",sans-serif;
+}
+.verseblock pre{
+    font-family: "Fira Sans Extra Condensed","DejaVu Sans",sans-serif;
+}
+.conum[data-value]{
+    font-family: "Fira Sans Extra Condensed","DejaVu Sans",sans-serif;
+}
+
+code {
+    font-family: "Fira Code","DejaVu Sans Mono",monospace;
+}
+kbd{
+    font-family: "Fira Code","DejaVu Sans Mono",monospace;
+}
+
+/* Customizations to rouge style */
+
+pre.rouge .nb { /* affects at least command names in shell scripts */
+    color: #fb4934;
+}

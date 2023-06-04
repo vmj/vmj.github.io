@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="description" content="A description in the HTML head">
+<meta name="keywords" content="example, asciidoc, asciidoctor">
+<meta name="author" content="Mikko Värri">
+<title>AsciiDoc Article Title</title>
+<link rel="stylesheet" href="/blog/asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- docinfo start -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Fira+Sans+Extra+Condensed:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/blog/rouge-gruvbox.css">
+<link rel="stylesheet" href="/blog/style.css">
+<link rel="stylesheet" href="/blog/fontawesome-6.4.0/css/fontawesome.min.css">
+<link rel="stylesheet" href="/blog/fontawesome-6.4.0/css/brands.min.css">
+<!-- docinfo end -->
+</head>
+<body class="article">
+<div id="custom-header">
+    <div id="custom-header-fixed">
+        <div id="custom-logo">
+            <a href="/">
+                <img src="/blog/author.png" alt="Picture of the author" />
+            </a>
+        </div>
+        <div class="custom-links">
+            <div><a href="/blog">Blog</a></div>
+        </div>
+    </div>
+    <div id="custom-header-notFixed">
+        <h1 id="custom-doctitle">AsciiDoc Article Title</h1>
+        <div id="custom-details">
+            <div id="custom-revremark">AsciiDoc article template</div>
+            <div id="custom-author">Mikko Värri</div>
+            <div id="custom-revdate">July 29, 2022</div>
+        </div>
+    </div>
+</div>
+<div id="asciidoc-content">
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Content entered directly below the header but before the first section heading is called the preamble.</p>
+</div>
+<div class="paragraph">
+<p>Is still preamble?</p>
+</div>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_first_level_heading">First level heading</a>
+<ul class="sectlevel2">
+<li><a href="#_second_level_heading">Second level heading</a></li>
+</ul>
+</li>
+<li><a href="#_first_level_heading_2">First level heading</a></li>
+<li><a href="#_first_level_heading_3">First level heading</a></li>
+</ul>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_level_heading">First level heading</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is a paragraph with a <strong>bold</strong> word and an <em>italicized</em> word.</p>
+</div>
+<div class="paragraph">
+<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#8217;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+</div>
+<div id="some-image-id" class="imageblock">
+<div class="content">
+<a class="image" href="https://mikko.varri.fi"><img src="some.png" alt="Alt text" width="100" height="100"></a>
+</div>
+<div class="title">Figure 1. Title aka caption</div>
+</div>
+<div class="paragraph">
+<p>Following image is missing on purpose.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="image-file-name.png" alt="I am the image alt text.">
+</div>
+<div class="title">Figure 2. Image caption</div>
+</div>
+<div class="paragraph">
+<p>This is another paragraph.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="sect2">
+<h3 id="_second_level_heading">Second level heading</h3>
+<div class="listingblock">
+<div class="title">An example of a shell script</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir </span>src/orchid/resources
+<span class="nb">cd</span> <span class="si">$(</span>PWD<span class="si">)</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">An example of a Groovy code</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="groovy"><span class="kn">package</span> <span class="nn">com.example</span>
+
+<span class="kn">import</span> <span class="nn">io.micronaut.*</span>
+
+<span class="nd">@Controller</span><span class="o">(</span><span class="s1">'/books'</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nc">BookService</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="n">fail</span> <span class="o">=</span> <span class="kc">true</span>
+
+    <span class="cm">/**
+     * List of books.
+     *
+     * @return list of books
+     */</span>
+    <span class="nd">@Get</span><span class="o">()</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="n">Flow</span><span class="o">&lt;</span><span class="n">Book</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">fail</span> <span class="o">!=</span> <span class="kc">false</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsupportedOperationException</span><span class="o">(</span><span class="s1">'Yep'</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="c1">// This never happens...</span>
+        <span class="kc">null</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Something about this line&#8230;&#8203;</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">An example Gradle script</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="gradle"><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'foo.bar'</span> <span class="n">version</span> <span class="s1">'1.2.3'</span>
+<span class="o">}</span>
+
+<span class="k">repositories</span> <span class="o">{</span>
+    <span class="n">mavenCentral</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="k">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="s1">'foo:bar:1.2.3'</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="example-diagram.svg" alt="example diagram" width="256" height="283">
+</div>
+<div class="title">Figure 3. An example diagram</div>
+</div>
+<div class="ulist">
+<div class="title">Unordered list title</div>
+<ul>
+<li>
+<p>list item 1</p>
+<div class="ulist">
+<ul>
+<li>
+<p>nested list item</p>
+<div class="ulist">
+<ul>
+<li>
+<p>nested nested list item 1</p>
+</li>
+<li>
+<p>nested nested list item 2</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>list item 2</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is a paragraph.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Example block title</div>
+<div class="content">
+<div class="paragraph">
+<p>Content in an example block is subject to normal substitutions.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Sidebar title</div>
+<div class="paragraph">
+<p>Sidebars contain aside text and are subject to normal substitutions.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_third_level_heading">Third level heading</h4>
+<div id="id-for-listing-block" class="listingblock">
+<div class="title">Listing block title</div>
+<div class="content">
+<pre>Content in a listing block is subject to verbatim substitutions.
+Listing block content is commonly used to preserve code input.</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_fourth_level_heading">Fourth level heading</h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Table title</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column heading 1</th>
+<th class="tableblock halign-left valign-top">Column heading 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column 1, row 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column 2, row 1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column 1, row 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column 2, row 2</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect5">
+<h6 id="_fifth_level_heading">Fifth level heading</h6>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>I am a block quote or a prose excerpt.
+I am subject to normal substitutions.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; firstname lastname<br>
+<cite>movie title</cite>
+</div>
+</div>
+<div class="verseblock">
+<pre class="content">I am a verse block.
+  Indents and endlines are preserved in verse blocks.</pre>
+<div class="attribution">
+&#8212; firstname lastname<br>
+<cite>poem title and more</cite>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_level_heading_2">First level heading</h2>
+<div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+There are five admonition labels: Tip, Note, Important, Caution and Warning.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>ordered list item</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>nested ordered list item</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>ordered list item</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The text at the end of this sentence is cross referenced to <a href="#_third_level_heading">the third level heading</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_level_heading_3">First level heading</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is a link to the <a href="https://docs.asciidoctor.org/home/">Asciidoctor documentation</a>.
+This is an attribute reference <a href="https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/">that links this text to the AsciiDoc Syntax Quick Reference</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. I am footnote text and will be displayed at the bottom of the article.
+</div>
+</div>
+</div> <!-- asciidoc-content from docinfo-header.html -->
+<div id="custom-footer">
+    <div class="custom-links">
+        <div>
+            <a href="https://fosstodon.org/@vmj">
+                <i class="fa-brands fa-mastodon"></i>
+            </a>
+        </div>
+    </div>
+    <div>
+        <div>Copyright &copy; 2022 Mikko Värri</div>
+        <div>Last updated 2022-07-24</div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="description" content="Minimal Java Application with Gradle">
+<meta name="keywords" content="java jvm gradle project template">
+<meta name="author" content="Mikko Värri">
+<title>Minimal Java Application with Gradle</title>
+<link rel="stylesheet" href="/blog/asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- docinfo start -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Fira+Sans+Extra+Condensed:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/blog/rouge-gruvbox.css">
+<link rel="stylesheet" href="/blog/style.css">
+<link rel="stylesheet" href="/blog/fontawesome-6.4.0/css/fontawesome.min.css">
+<link rel="stylesheet" href="/blog/fontawesome-6.4.0/css/brands.min.css">
+<!-- docinfo end -->
+</head>
+<body class="article">
+<div id="custom-header">
+    <div id="custom-header-fixed">
+        <div id="custom-logo">
+            <a href="/">
+                <img src="/blog/author.png" alt="Picture of the author" />
+            </a>
+        </div>
+        <div class="custom-links">
+            <div><a href="/blog">Blog</a></div>
+        </div>
+    </div>
+    <div id="custom-header-notFixed">
+        <h1 id="custom-doctitle">Minimal Java Application with Gradle</h1>
+        <div id="custom-details">
+            <div id="custom-revremark">Minimal useful, that is</div>
+            <div id="custom-author">Mikko Värri</div>
+            <div id="custom-revdate">June 3, 2023</div>
+        </div>
+    </div>
+</div>
+<div id="asciidoc-content">
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this post we will take a look at starting a Java project from scratch,
+using the <a href="https://gradle.org/">Gradle</a> as the build tool.</p>
+</div>
+<div class="paragraph">
+<p>Whenever I want to play with some JVM library,
+or I want to try out something,
+I try to use the thing in a minimal project.
+For me, that&#8217;s the best way to learn something: trying it the hard way.
+Even though in a real application I wouldn&#8217;t try to be so minimalistic.</p>
+</div>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_a_project_starts_with_an_empty_directory">A Project Starts with an Empty Directory</a></li>
+<li><a href="#_declare_the_project_a_gradle_project">Declare the Project a Gradle Project</a>
+<ul class="sectlevel2">
+<li><a href="#_nail_down_the_gradle_version">Nail Down the Gradle Version</a></li>
+</ul>
+</li>
+<li><a href="#_implement_the_java_application">Implement the Java Application</a></li>
+<li><a href="#_conclusion">Conclusion</a></li>
+</ul>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_project_starts_with_an_empty_directory">A Project Starts with an Empty Directory</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We just got inspired with an idea to build a command line interface (CLI)
+application that prints a greeting on the console.  We will call it Hello CLI.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://git-scm.com/">Git</a> has been the <em>de facto</em> version control system
+for software projects since forever.
+So let&#8217;s start with a minimal Git project:</p>
+</div>
+<div class="listingblock">
+<div class="title">Shell commands to run to create a Git repository</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir </span>hello-cli
+<span class="nb">cd </span>hello-cli
+git init <span class="nb">.</span>
+git commit <span class="nt">--allow-empty</span> <span class="nt">-m</span> <span class="s2">"Initial (empty) commit"</span> <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The first commit in any Git repository is special in that
+it&#8217;s the only commit that doesn&#8217;t have parents.
+With the <code>--allow-empty</code> flag we can make it even more special:
+no content either.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_declare_the_project_a_gradle_project">Declare the Project a Gradle Project</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For a project to be a Gradle project,
+it needs to have either a <code>settings.gradle</code> or a <code>build.gradle</code> file.
+I like to start with the former, since it declares the name of the project.</p>
+</div>
+<div class="listingblock">
+<div class="title">Shell commands to use to initialize a Gradle project</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">echo</span> <span class="s2">"rootProject.name = 'hello-cli'"</span> <span class="o">&gt;</span>settings.gradle
+git add settings.gradle
+git commit <span class="nt">-m</span> <span class="s2">"Minimal Gradle project"</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Without the project name in <code>settings.gradle</code>, Gradle would default to using
+the directory name as the value of the <code>project.name</code> property.
+In our case they are the same.
+But if someone cloned this project to a differently named directory,
+the <code>project.name</code> property would have that different name,
+and something could go wrong.</p>
+</div>
+<div class="paragraph">
+<p>Also, if some ancestor directory contained a <code>settings.gradle</code> file,
+then a <code>build.gradle</code> file alone could be mistaken to be a Gradle submodule.
+Quite unlikely, but still&#8230;&#8203;</p>
+</div>
+<div class="sect2">
+<h3 id="_nail_down_the_gradle_version">Nail Down the Gradle Version</h3>
+<div class="paragraph">
+<p>For more reliable builds,
+and for ease of upgrades across team members,
+we want to include the <a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html">Gradle Wrapper</a>
+in the source control.</p>
+</div>
+<div class="paragraph">
+<p>Following snippet assumes we have the desired version of Gradle installed globally.
+On Mac OS X, Linux, and similar systems, we can use the <code>sdk install gradle</code> command from the <a href="https://sdkman.io/">SDKMAN!</a>
+On Windows, <code>choco install gradle</code> from <a href="https://community.chocolatey.org/">Chocolatey</a> would do.
+The globally installed Gradle tends to do little more than provide the wrapper
+for me, so I keep the global install up-to-date with the latest release.</p>
+</div>
+<div class="paragraph">
+<p>Since Gradle is a Java application, we also need to have a
+<a href="https://docs.gradle.org/current/userguide/compatibility.html">compatible Java version</a>
+installed globally.  The <code>sdk install java</code> is your friend.  On Windows,
+I&#8217;ve had success with <a href="https://github.com/ystyle/jvms">JVMS</a>.</p>
+</div>
+<div class="paragraph">
+<p>With Java and Gradle installed globally, we can add the Gradle Wrapper to
+our project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">echo</span> <span class="s2">".gradle"</span> <span class="o">&gt;</span>.gitignore
+<span class="nb">echo</span> <span class="s2">"build"</span> <span class="o">&gt;&gt;</span>.gitignore <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="nb">echo</span> <span class="s2">"gradlew.bat -text"</span> <span class="o">&gt;</span>.gitattributes <i class="conum" data-value="2"></i><b>(2)</b>
+gradle wrapper
+git add .gitignore .gitattributes gradle<span class="k">*</span>
+git commit <span class="nt">-m</span> <span class="s2">"Add Gradle wrapper"</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>.gradle</code> is the Gradle cache directory, and the <code>build</code> will contain
+all the generated files.  We don&#8217;t want Git tracking them.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>gradlew.bat</code> file contains Windows style line endings, so I tend to
+lie to Git that it is not a text file.  This disables the automatic
+line ending conversions.  There&#8217;s probably better ways to handle this.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implement_the_java_application">Implement the Java Application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now we are ready to implement the Hello CLI.</p>
+</div>
+<div class="listingblock">
+<div class="title">Contents of the <code>build.gradle</code> file</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="groovy"><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'application'</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="o">}</span>
+
+<span class="n">java</span> <span class="o">{</span>
+    <span class="n">toolchain</span> <span class="o">{</span>
+        <span class="n">languageVersion</span> <span class="o">=</span> <span class="n">JavaLanguageVersion</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">17</span><span class="o">)</span> <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">application</span> <span class="o">{</span>
+    <span class="n">mainClass</span> <span class="o">=</span> <span class="s1">'fi.linuxbox.app.Main'</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>application</code> Gradle plugin gives us the ability to run our JVM application.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The Java version we declare here does not have to be the same as we have
+globally.  This is the version that will be used to compile and run our
+Hello CLI.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The conventional place for the production code is the <code>src/main/java</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="title">Creating the directory for the <code>Main.java</code> file</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir</span> <span class="nt">-p</span> src/main/java/fi/linuxbox/app</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Our CLI application fits fine into the <code>main</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="title">Contents of the <code>src/main/java/fi/linuxbox/app/Main.java</code> file</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kn">package</span> <span class="nn">fi.linuxbox.app</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">...</span> <span class="n">args</span><span class="o">){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, World! Running on Java "</span>
+                               <span class="o">+</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"java.version"</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can do some exploratory testing by running the application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">./gradlew run</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And since it&#8217;s working, let&#8217;s commit and call it a day.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">git add src build.gradle
+git commit <span class="nt">-m</span> <span class="s2">"Minimal Java application"</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Even a small project like this, the project already has three aspects to it:
+it is a Git project, a Gradle project, and a Java project.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="diag-93fa7eec70533c45ec97315d0454d69d.png" alt="Diagram" width="165" height="239">
+</div>
+<div class="title">Figure 1. Directory structure of our project</div>
+</div>
+<div class="paragraph">
+<p>You can learn more about the Git commands
+<a href="https://git-scm.com/docs/git-init">init</a>,
+<a href="https://git-scm.com/docs/git-add">add</a>, and
+<a href="https://git-scm.com/docs/git-commit">commit</a> at the <a href="https://git-scm.com/" class="bare">https://git-scm.com/</a>
+site.</p>
+</div>
+</div>
+</div>
+</div>
+</div> <!-- asciidoc-content from docinfo-header.html -->
+<div id="custom-footer">
+    <div class="custom-links">
+        <div>
+            <a href="https://fosstodon.org/@vmj">
+                <i class="fa-brands fa-mastodon"></i>
+            </a>
+        </div>
+    </div>
+    <div>
+        <div>Copyright &copy; 2023 Mikko Värri</div>
+        <div>Last updated 2023-06-04</div>
+    </div>
+</div>
+</body>
+</html>
